@@ -2,7 +2,7 @@ import math
 
 #Total flow
 Qtottmp = 548
-#Upstream level
+#UpHill level
 Eamtmp = 172
 NBstages=3
 Sn = 5 #the total number of allocated flow
@@ -17,11 +17,11 @@ CalculationMatrix=[[0,0,0],
 #H is the drop height
 #def BuildingSolutionTree(H):
 #Drop height computation
-
+#Xn turbined flow, i Stage(turbine)
 def costFunction(Xn,i):
     return CalculationMatrix[Xn][i]
 
-
+#Qtot total flow, Eam uphill level
 def computeDropHeight(Qtot, Eam):
     return Eam-(-7.017 * math.pow(10,-7)*Qtot*Qtot + 0.004107 * Qtot + 137.2)
 
@@ -33,6 +33,7 @@ def StageN():
     #print(track)
     return allStage(track,NBstages-1)
 
+#track is the table of complete subproblems
 def allStage(track, stage):
     table=[0]*(Sn+1)
     track[stage-1]=[]
