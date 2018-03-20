@@ -1,26 +1,21 @@
 import math
 
 #Total flow
-Qtottmp = 549
+Qtottmp = 5469
 #UpHill level
 Eamtmp = 172.110
 NBstages=5
-Sn = 549 #the total number of allocated flow per turbine
+Sn = 5469 #the total number of allocated flow per turbine
 track = [0]*NBstages
-CalculationMatrix=[[0,0,0],
-        [45,20,50],
-    [70,45,70],
-    [90,75,80],
-    [105,110,100],
-    [120,150,130]]
+
 
 #H is the drop height
 #def BuildingSolutionTree(H):
 #Drop height computation
 #Q turbined flow, i Stage(turbine)
 def costFunction(Q,i):
-    
-    H=computeDropHeight(Qtottmp,Eamtmp)
+    Q=Q/10
+    H=computeDropHeight(Qtottmp/10,Eamtmp)
     if i==4:
         P = 0.08574 - 0.002519*H - 0.1976*Q + 0.008179*H*Q + 0.002893*Q*Q + 7.395 *math.pow(10,-6)  *H*Q*Q - 1.196 * math.pow(10,-5) *Q*Q*Q
     if i==3:
@@ -81,14 +76,14 @@ def allStage(track, stage):
 def computeFinalSolution(track):
     Solution=[]
     Cost=(track[0][Sn][1])
-    Solution.append(track[0][(Sn-1)][2])
+    Solution.append(track[0][(Sn-1)][2]/10)
     print(Solution[0])
     print(Cost)
-    Ressources=Sn-Solution[0]
+    Ressources=Sn-track[0][(Sn-1)][2]
     for i in range(1,len(track)) :
         for j in track[i]:
             if j[0]==Ressources:
-                Solution.append(j[2])
+                Solution.append(j[2]/10)
                 Ressources-=j[2]
                 break
     return (Solution, Cost)
