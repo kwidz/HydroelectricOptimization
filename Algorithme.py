@@ -1,11 +1,11 @@
 import math
 
 #Total flow
-Qtottmp = 548
+Qtottmp = 549
 #UpHill level
-Eamtmp = 172
-NBstages=3
-Sn = 5 #the total number of allocated flow
+Eamtmp = 172.110
+NBstages=5
+Sn = 549 #the total number of allocated flow per turbine
 track = [0]*NBstages
 CalculationMatrix=[[0,0,0],
         [45,20,50],
@@ -17,9 +17,26 @@ CalculationMatrix=[[0,0,0],
 #H is the drop height
 #def BuildingSolutionTree(H):
 #Drop height computation
-#Xn turbined flow, i Stage(turbine)
-def costFunction(Xn,i):
-    return CalculationMatrix[Xn][i]
+#Q turbined flow, i Stage(turbine)
+def costFunction(Q,i):
+    
+    H=computeDropHeight(Qtottmp,Eamtmp)
+    if i==4:
+        P = 0.08574 - 0.002519*H - 0.1976*Q + 0.008179*H*Q + 0.002893*Q*Q + 7.395 *math.pow(10,-6)  *H*Q*Q - 1.196 * math.pow(10,-5) *Q*Q*Q
+    if i==3:
+        P = 0.8117-0.02372*H -0.2443*Q+0.006487*H*Q+0.003843*Q*Q +2.211*math.pow(10,-5)*H*Q*Q -1.672 *math.pow(10,-5)*Q*Q*Q
+
+    if i==2:
+        P = -0.025 + 0.0009633*H - 0.2158*Q + 0.006349*H*Q + 0.003545*Q*Q + 2.217 *math.pow(10,-5) *H*Q*Q - 1.576 *math.pow(10,-5) *Q*Q*Q
+
+    if i==1:
+        P = -0.04626 + 0.001767*H - 0.1908*Q + 0.004949*H*Q + 0.003545*Q*Q + 3.488 *math.pow(10,-5) *H*Q*Q - 1.698 *math.pow(10,-5) *Q*Q*Q
+
+    if i==0:
+        P = 0.293-0.008025*H -0.1833*Q+0.008081*H*Q+0.002709*Q*Q +1.955*math.pow(10,-5)*H*Q*Q -1.325 *math.pow(10,-5)*Q*Q*Q
+
+        
+    return P
 
 #Qtot total flow, Eam uphill level
 def computeDropHeight(Qtot, Eam):
@@ -35,7 +52,8 @@ def StageN():
 
 #track is the table of complete subproblems
 def allStage(track, stage):
-    table=[0]*(Sn+1)
+    print(stage)
+    table=[0]*(math.ceil((Sn+1)))
     track[stage-1]=[]
     for i in range(Sn+1):
 
@@ -46,6 +64,7 @@ def allStage(track, stage):
                 #print(str(i)+" "+str(j))
                 #print("f3* "+str(track[stage][i-j][1]))
                 #print("F2* "+str(costFunction(j,stage-1)))
+                #print(track[stage])
                 value=track[stage][i-j][1]+costFunction(j,stage-1)
                 table[i].append(value)
                 if(value > bestRank_Value[1]):
@@ -62,7 +81,9 @@ def allStage(track, stage):
 def computeFinalSolution(track):
     Solution=[]
     Cost=(track[0][Sn][1])
-    Solution.append(track[0][Sn-1][2])
+    Solution.append(track[0][(Sn-1)][2])
+    print(Solution[0])
+    print(Cost)
     Ressources=Sn-Solution[0]
     for i in range(1,len(track)) :
         for j in track[i]:
