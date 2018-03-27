@@ -61,7 +61,8 @@ def allStage(track, stage):
 def computeFinalSolution(track):
     Solution=[]
     Cost=(track[0][Sn][1])
-    Solution.append(track[0][Sn-1][2])
+    
+    Solution.append(track[0][Sn][2])
     Ressources=Sn-Solution[0]
     for i in range(1,len(track)) :
         for j in track[i]:
@@ -75,4 +76,4 @@ def computeFinalSolution(track):
 
 
 print(computeFinalSolution(StageN()))
-print(computeDropHeight(Qtottmp,Eamtmp))
+#print(computeDropHeight(Qtottmp,Eamtmp))
