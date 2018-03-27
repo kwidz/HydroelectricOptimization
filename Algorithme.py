@@ -97,6 +97,10 @@ def computeFinalSolution(track,Qtot):
     return (Solution, Cost)
         
 def launchAlgorithme(Qtot, eam):
+    with open('filename') as f:
+        lines = f.readlines()
+        for i in lines:
+            print i
     track=StageN(Qtot, eam)
     turbine, puissance = (computeFinalSolution(track,Qtot))
     print("Débit total : "+str(Qtot)+" Elevation amont : "+str(eam))
