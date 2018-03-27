@@ -40,7 +40,8 @@ def costFunction(Q,i,Qtot,Eam ):
 #Qtot total flow, Eam uphill level
 def computeDropHeight(Qtot, Eam):
     return Eam-(-7.017 * math.pow(10,-7)*Qtot*Qtot + 0.004107 * Qtot + 137.2)
-
+    #return 0.002989 * Qtot +137.6
+    
 def StageN(Qtot, Eam):
     track[NBstages-1]=[]
     for i in range(Qtot+1):
@@ -80,7 +81,6 @@ def allStage(track, stage,Qtot, Eam):
 def computeFinalSolution(track,Qtot):
     Solution=[]
     Cost=(track[0][Qtot][1])
-    print(track[0])
     Solution.append(track[0][Qtot][2])
     #print(track[0][Qtot])
     Ressources=Qtot-track[0][(Qtot)][2]
@@ -96,26 +96,40 @@ def computeFinalSolution(track,Qtot):
                     break
     return (Solution, Cost)
         
-def launchAlgorithme(Qtot, eam):
-    with open('filename') as f:
+def launchAlgorithme():
+    with open('TestingValues') as f:
         lines = f.readlines()
         for i in lines:
-            print i
-    track=StageN(Qtot, eam)
-    turbine, puissance = (computeFinalSolution(track,Qtot))
-    print("Débit total : "+str(Qtot)+" Elevation amont : "+str(eam))
-    print("Débit turbine 1 : "+str(turbine[1]) +" m3/s")
-    print("Débit turbine 2 : "+str(turbine[2])+" m3/s")
-    print("Débit turbine 3 : "+str(turbine[3])+" m3/s")
-    print("Débit turbine 4 : "+str(turbine[4])+" m3/s")
-    print("Débit turbine 5 : "+str(turbine[5])+" m3/s")
-    print("Débit van : " + str(turbine[0]))
-    print("Puissance produite : "+str(puissance) + " MW")
+            if(i[:1]=='#'):
+                print(i)
+            else:
+                values=i.split(";")
+                Qtot=int(values[0].split('.')[:1][0])
+                Qvan=values[2]
+                eam=float(values[3])
+                Q1=values[4]
+                Q2=values[6]
+                Q3=values[8]
+                Q4=values[10]
+                Q5=values[12]
+                Ptot = float(values[5])+float(values[7])+float(values[9])+float(values[11])+float(values[13])
+                
+                track=StageN(Qtot, eam)
+                turbine, puissance = (computeFinalSolution(track,Qtot))
+                ecart=-round(((Ptot-puissance)/Ptot)*100,2)
+                print("Débit total : "+str(Qtot)+" Elevation amont : "+str(eam))
+                print("Débit turbine 1 : "+str(turbine[1]) +" m3/s\t"+Q1)
+                print("Débit turbine 2 : "+str(turbine[2])+" m3/s\t"+Q2)
+                print("Débit turbine 3 : "+str(turbine[3])+" m3/s\t"+Q3)
+                print("Débit turbine 4 : "+str(turbine[4])+" m3/s\t"+Q4)
+                print("Débit turbine 5 : "+str(turbine[5])+" m3/s\t"+Q5)
+                print("Débit vanne : " + str(turbine[0])+"\t"+Qvan)
+                print("Puissance produite : "+str(puissance) + " MW\t"+str(Ptot)+"\nÉcart : "+str(ecart)+"%")
     
     
 
 
 
-#launchAlgorithme(548,172.110)
-launchAlgorithme(813,172.192)
+#launchAlgorithme(813,172.192)
+launchAlgorithme()
 #print(computeDropHeight(Qtottmp,Eamtmp))
