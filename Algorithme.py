@@ -118,13 +118,13 @@ def launchAlgorithme():
                 turbine, puissance = (computeFinalSolution(track,Qtot))
                 ecart=-round(((Ptot-puissance)/Ptot)*100,2)
                 print("Débit total : "+str(Qtot)+" Elevation amont : "+str(eam))
-                print("Débit turbine 1 : "+str(turbine[1]) +" m3/s\t"+Q1)
-                print("Débit turbine 2 : "+str(turbine[2])+" m3/s\t"+Q2)
-                print("Débit turbine 3 : "+str(turbine[3])+" m3/s\t"+Q3)
-                print("Débit turbine 4 : "+str(turbine[4])+" m3/s\t"+Q4)
-                print("Débit turbine 5 : "+str(turbine[5])+" m3/s\t"+Q5)
-                print("Débit vanne : " + str(turbine[0])+"\t"+Qvan)
-                print("Puissance produite : "+str(puissance) + " MW\t"+str(Ptot)+"\nÉcart : "+str(ecart)+"%")
+                print("Débit turbine 1 : "+str(turbine[1]) +" m3/s\t"+Q1+" m3/s")
+                print("Débit turbine 2 : "+str(turbine[2])+" m3/s\t"+Q2+" m3/s")
+                print("Débit turbine 3 : "+str(turbine[3])+" m3/s\t"+Q3+" m3/s")
+                print("Débit turbine 4 : "+str(turbine[4])+" m3/s\t"+Q4+" m3/s")
+                print("Débit turbine 5 : "+str(turbine[5])+" m3/s\t"+Q5+" m3/s")
+                print("Débit vanne : \t" + str(turbine[0])+" m3/s\t\t"+Qvan+" m3/s")
+                print("Puissance produite : "+str(round(puissance,2)) + " MW\t"+str(round(Ptot,2))+" MW\nÉcart : "+str(ecart)+"%")
     
     
 
