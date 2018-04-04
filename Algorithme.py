@@ -127,9 +127,13 @@ def launchAlgorithme():
                 print("Puissance produite : "+str(round(puissance,2)) + " MW\t"+str(round(Ptot,2))+" MW\nÉcart : "+str(ecart)+"%")
     
     
+def runSimulation(Qtot, eam):
+    track=StageN(Qtot, eam)
+    turbine, puissance = (computeFinalSolution(track,Qtot))
+    return (turbine, puissance)
 
 
 
 #launchAlgorithme(813,172.192)
-launchAlgorithme()
+#launchAlgorithme()
 #print(computeDropHeight(Qtottmp,Eamtmp))
