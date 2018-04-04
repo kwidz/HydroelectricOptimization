@@ -5,7 +5,7 @@ import math
 #UpHill level
 #Eamtmp = 172.110
 NBstages=6
-Sn = 180 #the total number of allocated flow per turbine
+Sn = [180,180,180,180,180,180] #the total number of allocated flow per turbine
 track = [0]*NBstages
 
 
@@ -17,8 +17,11 @@ def costFunction(Q,i,Qtot,Eam ):
     Q=Q
     H=computeDropHeight(Qtot,Eam)
     #pertes = 0.5*math.exp(-5)*Q*Q
-    if(Q>Sn or i==0):
+    if(i==0 or Q==0):
         return 0
+    if(Q>Sn[i]):
+        return -1
+    
     if i==1:
         P = 0.08574 - 0.002519*H - 0.1976*Q + 0.008179*H*Q + 0.002893*Q*Q + 7.395 *math.pow(10,-6)  *H*Q*Q - 1.196 * math.pow(10,-5) *Q*Q*Q
     
@@ -127,7 +130,9 @@ def launchAlgorithme():
                 print("Puissance produite : "+str(round(puissance,2)) + " MW\t"+str(round(Ptot,2))+" MW\nÉcart : "+str(ecart)+"%")
     
     
-def runSimulation(Qtot, eam):
+def runSimulation(Qtot, eam, Qlim):
+    global Sn
+    Sn=Qlim
     track=StageN(Qtot, eam)
     turbine, puissance = (computeFinalSolution(track,Qtot))
     return (turbine, puissance)
