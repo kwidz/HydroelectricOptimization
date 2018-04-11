@@ -1,13 +1,9 @@
 import math
 
-#Total flow
-#Qtottmp = 548
-#UpHill level
-#Eamtmp = 172.110
-NBstages=6
-Sn = [180,180,180,180,180,180] #the total number of allocated flow per turbine
-track = [0]*NBstages
-discret5 = False
+NBstages=6 #5 stages for turbine and 1 for deversing valve
+Sn = [180,180,180,180,180,180] #the total number of allocated flow per turbine(default choice but it will be changed by the GUI)
+track = [0]*NBstages #list of all dynamic programming tables
+discret5 = False #boolean state to know if we use a 5m3/s discretization flow
 
 #H is the drop height
 #def BuildingSolutionTree(H):
