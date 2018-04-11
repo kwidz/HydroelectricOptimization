@@ -7,7 +7,7 @@ import math
 NBstages=6
 Sn = [180,180,180,180,180,180] #the total number of allocated flow per turbine
 track = [0]*NBstages
-
+discret5 = False
 
 #H is the drop height
 #def BuildingSolutionTree(H):
@@ -17,6 +17,8 @@ def costFunction(Q,i,Qtot,Eam ):
     Q=Q
     H=computeDropHeight(Qtot,Eam)
     #pertes = 0.5*math.exp(-5)*Q*Q
+    if(discret5 and Q%5 != 0):
+        return -1
     if(i==0 or Q==0):
         return 0
     if(Q>Sn[i]):
@@ -130,7 +132,14 @@ def launchAlgorithme():
                 print("Puissance produite : "+str(round(puissance,2)) + " MW\t"+str(round(Ptot,2))+" MW\nÉcart : "+str(ecart)+"%")
     
     
-def runSimulation(Qtot, eam, Qlim):
+def runSimulation(Qtot, eam, Qlim, discretization):
+    global discret5
+    if(discretization):
+        discret5 = True
+        Qtot=int(5 * round(float(Qtot)/5))
+    else:
+        discret5=False
+        
     global Sn
     Sn=Qlim
     track=StageN(Qtot, eam)
