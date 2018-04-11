@@ -8,7 +8,7 @@ from PyQt5.QtGui import QPixmap, QImage, QRegExpValidator, QDoubleValidator, QIn
 from Algorithme import *
 
 
-
+#listener of lauch button pressed
 def SimulationListener():
     Qtot = ui.Qtot.text()
     eam = ui.eam.text()
@@ -35,6 +35,7 @@ def SimulationListener():
     ui.Qvanne.setText(str(turbine[0]))
     ui.puissance.setText(str(puissance))
 
+#listener of all turbine flow checkboxes
 def state_changed(int):
     if not ui.T1.isChecked():
         ui.Qt1.setText("0")
