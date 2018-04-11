@@ -19,8 +19,11 @@ def costFunction(Q,i,Qtot,Eam ):
     #pertes = 0.5*math.exp(-5)*Q*Q
     if(discret5 and Q%5 != 0):
         return -1
+    #if i=0 then it is the deversing valve so just return 0
+    #if Q=0 just return 0 because if we use the power evaluations functions, it does'nt return 0 beacause of the modelisation.
     if(i==0 or Q==0):
         return 0
+    #If Q> max flow for this turbine, it's an unbreakable constraint so return -1
     if(Q>Sn[i]):
         return -1
     
