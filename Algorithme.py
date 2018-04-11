@@ -45,31 +45,32 @@ def costFunction(Q,i,Qtot,Eam ):
 #Qtot total flow, Eam uphill level
 def computeDropHeight(Qtot, Eam):
     return Eam-(-7.017 * math.pow(10,-7)*Qtot*Qtot + 0.004107 * Qtot + 137.2)
+    #Tests with another evaluation function
     #return 0.002989 * Qtot +137.6
     
+#Last stage of dynamic programming algorithm
 def StageN(Qtot, Eam):
     track[NBstages-1]=[]
     for i in range(Qtot+1):
         #print(costFunction(i,NBstages-1))
         track[NBstages-1].append([i,costFunction(i,NBstages-1,Qtot, Eam),i])
-    #print(track)
+    #Launch recursion for all stage 
     return allStage(track,NBstages-1,Qtot, Eam)
 
-#track is the table of complete subproblems
+#track is the table of complete subproblems, Stage is the identifiant number of the current stage, Qtot is the total flow, Eam is the uphill level
+#(Backward pass)
 def allStage(track, stage,Qtot, Eam):
     #print(stage)
     table=[0]*(math.ceil((Qtot+1)))
     track[stage-1]=[]
+    
+    #for all possible flow values , make the dynamic programming table
     for i in range(Qtot+1):
-
         table[i]=[]
         bestRank_Value = (0,0)
+        #for all possible flow values, calculate the power generated
         for j in range(Qtot+1):
             if(i>=j):
-                #print(str(i)+" "+str(j))
-                #print("f3* "+str(track[stage][i-j][1]))
-                #print("F2* "+str(costFunction(j,stage-1)))
-                #print(track[stage])
                 value=track[stage][i-j][1]+costFunction(j,stage-1,Qtot, Eam)
                 table[i].append(value)
                 if(value > bestRank_Value[1]):
@@ -77,12 +78,14 @@ def allStage(track, stage,Qtot, Eam):
             else:
                 table[i].append(-1)
         track[stage-1].append([i,bestRank_Value[1],bestRank_Value[0]]) 
-    #print(table)
+    #if made all dynamic programming tables just return the list of all stages dynamic programming table
     if(stage==1):
         return track
+    #else, compute the next dynamic programming table
     else:
         return allStage(track, stage-1,Qtot, Eam)
 
+#after making all dynamic programming tables we use it and we build the optimal solution by forward pass
 def computeFinalSolution(track,Qtot):
     Solution=[]
     Cost=(track[0][Qtot][1])
@@ -100,7 +103,8 @@ def computeFinalSolution(track,Qtot):
                     Ressources-=j[2]
                     break
     return (Solution, Cost)
-        
+ 
+#just a testing function in order to test the algorithm with the 200 values picked in the excel file.
 def launchAlgorithme():
     with open('TestingValues') as f:
         lines = f.readlines()
@@ -131,7 +135,8 @@ def launchAlgorithme():
                 print("Débit vanne : \t" + str(turbine[0])+" m3/s\t\t"+Qvan+" m3/s")
                 print("Puissance produite : "+str(round(puissance,2)) + " MW\t"+str(round(Ptot,2))+" MW\nÉcart : "+str(ecart)+"%")
     
-    
+#function which is returning result of computation to the graphical user interface
+#it takes in arguments Total flow (Qtot, uphill), level (eam), QLim is an array of maximum flow to be turbinated by each turbine, discretisation is a boolean wich represent if the flow discretization is 1m3/s or 5m2/s
 def runSimulation(Qtot, eam, Qlim, discretization):
     global discret5
     if(discretization):
