@@ -8,6 +8,7 @@ from PyQt5.QtGui import QPixmap, QImage, QRegExpValidator, QDoubleValidator, QIn
 from Algorithme import *
 
 
+
 #listener of lauch button pressed
 def SimulationListener():
     Qtot = ui.Qtot.text()
@@ -32,8 +33,15 @@ def SimulationListener():
     ui.Q3.setText(str(turbine[3]))
     ui.Q4.setText(str(turbine[4]))
     ui.Q5.setText(str(turbine[5]))
+    
+    ui.P1.setText(str(round(costFunction(turbine[1],1,int(Qtot),float(eam)),3)))
+    ui.P2.setText(str(round(costFunction(turbine[2],2,int(Qtot),float(eam)),3)))
+    ui.P3.setText(str(round(costFunction(turbine[3],3,int(Qtot),float(eam)),3)))
+    ui.P4.setText(str(round(costFunction(turbine[4],4,int(Qtot),float(eam)),3)))
+    ui.P5.setText(str(round(costFunction(turbine[5],5,int(Qtot),float(eam)),3)))
+    
     ui.Qvanne.setText(str(turbine[0]))
-    ui.puissance.setText(str(puissance))
+    ui.puissance.setText(str(round(puissance,3)))
 
 #listener of all turbine flow checkboxes
 def state_changed(int):
@@ -41,35 +49,39 @@ def state_changed(int):
         ui.Qt1.setText("0")
         ui.Qt1.setDisabled(True)
     else:
-        ui.Qt1.setText(str(180))
+        if ui.Qt1.text()=="0":
+            ui.Qt1.setText(str(180))
         ui.Qt1.setDisabled(False)
     if not ui.T2.isChecked():
         ui.Qt2.setText("0")
         ui.Qt2.setDisabled(True)
     else:
-        ui.Qt2.setText(str(180))
+        if ui.Qt2.text()=="0":
+            ui.Qt2.setText(str(180))
         ui.Qt2.setDisabled(False)
     if not ui.T3.isChecked():
         ui.Qt3.setText("0")
         ui.Qt3.setDisabled(True)
     else:
-        ui.Qt3.setText(str(180))
+        if ui.Qt3.text()=="0":
+            ui.Qt3.setText(str(180))
         ui.Qt3.setDisabled(False)
     if not ui.T4.isChecked():
         ui.Qt4.setText("0")
         ui.Qt4.setDisabled(True)
     else:
-        ui.Qt4.setText(str(180))
+        if ui.Qt4.text()=="0":
+            ui.Qt4.setText(str(180))
         ui.Qt4.setDisabled(False)
     if not ui.T5.isChecked():
         ui.Qt5.setText("0")
         ui.Qt5.setDisabled(True)
     else:
-        ui.Qt5.setText(str(180))
+        if ui.Qt5.text()=="0":
+            ui.Qt5.setText(str(180))
         ui.Qt5.setDisabled(False)
 
 if __name__ == "__main__":
-    global spinner
     app = QApplication(sys.argv)
     ui = loadUi('main.ui')
     validatorDouble =  QDoubleValidator()
@@ -92,11 +104,8 @@ if __name__ == "__main__":
     ui.T4.stateChanged.connect(state_changed)
     ui.T5.stateChanged.connect(state_changed)
     ui.run.clicked.connect(SimulationListener)
-    
-    
     pixmap = QPixmap('Centrale.jpg')
     ui.image.setPixmap(pixmap)
-    
     ui.show()
 
 sys.exit(app.exec_())
