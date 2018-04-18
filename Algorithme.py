@@ -102,6 +102,10 @@ def computeFinalSolution(track,Qtot):
         else:
             for j in track[i]:
                 if j[0]==Ressources:
+                    if (i==5 and Sn[i]<Ressources):
+                        Solution.append(0)
+                        Solution[0]+=Ressources
+                        break
                     Solution.append(j[2])
                     Ressources-=j[2]
                     break
@@ -156,6 +160,7 @@ def launchAlgorithme():
 #function which is returning result of computation to the graphical user interface
 #it takes in arguments Total flow (Qtot, uphill), level (eam), QLim is an array of maximum flow to be turbinated by each turbine, discretisation is a boolean wich represent if the flow discretization is 1m3/s or 5m2/s
 def runSimulation(Qtot, eam, Qlim, discretization):
+    
     global discret5
     if(discretization):
         discret5 = True
