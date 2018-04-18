@@ -86,6 +86,8 @@ if __name__ == "__main__":
     ui = loadUi('main.ui')
     validatorDouble =  QDoubleValidator()
     validatorInt =  QIntValidator()
+    validatorDouble.setBottom(0)
+    validatorInt.setBottom(0)
     ui.Qt1.setValidator(validatorInt)
     ui.Qt2.setValidator(validatorInt)
     ui.Qt3.setValidator(validatorInt)

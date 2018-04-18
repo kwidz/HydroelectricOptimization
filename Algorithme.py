@@ -1,5 +1,9 @@
 import math
 
+#from mpl_toolkits.mplot3d import Axes3D
+#import matplotlib.pyplot as plt
+#import numpy as np
+
 NBstages=6 #5 stages for turbine and 1 for deversing valve
 Sn = [180,180,180,180,180,180] #the total number of allocated flow per turbine(default choice but it will be changed by the GUI)
 track = [0]*NBstages #list of all dynamic programming tables
@@ -105,6 +109,8 @@ def computeFinalSolution(track,Qtot):
  
 #just a testing function in order to test the algorithm with the 200 values picked in the excel file.
 def launchAlgorithme():
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
     with open('TestingValues') as f:
         lines = f.readlines()
         for i in lines:
@@ -133,6 +139,19 @@ def launchAlgorithme():
                 print("Débit turbine 5 : "+str(turbine[5])+" m3/s\t"+Q5+" m3/s")
                 print("Débit vanne : \t" + str(turbine[0])+" m3/s\t\t"+Qvan+" m3/s")
                 print("Puissance produite : "+str(round(puissance,2)) + " MW\t"+str(round(Ptot,2))+" MW\nÉcart : "+str(ecart)+"%")
+                #all commented lines bellow are lines used to make a result graph 
+                #xs = Qtot
+                #ys = eam
+                #zs = puissance
+                #ax.scatter(xs, ys, zs, c="#ad2022")
+                
+                #zs = Ptot
+                #ax.scatter(xs, ys, zs, c="#1515FE")
+    #ax.set_xlabel('Débit total (M3/s)')
+    #ax.set_ylabel('élévation amont (M)')
+    #ax.set_zlabel('Puissance produite (MW)')
+
+    #plt.show()
     
 #function which is returning result of computation to the graphical user interface
 #it takes in arguments Total flow (Qtot, uphill), level (eam), QLim is an array of maximum flow to be turbinated by each turbine, discretisation is a boolean wich represent if the flow discretization is 1m3/s or 5m2/s
